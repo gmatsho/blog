@@ -1,0 +1,25 @@
+version: '3'
+services:
+    apache:
+        build:
+            context: ./docker/8.2
+            dockerfile: Dockerfile
+        ports:
+        - '3000:80'
+        volumes:
+            - .:/blog
+        working_dir: /blog
+        depends_on:
+            - mysql
+
+    mysql:
+        image: mysql:latest
+        ports:
+            - '4306:3306'
+        environment:
+            MYSQL_ROOT_PASSWORD: secret
+            MYSQL_DATABASE: blog_db
+            MYSQL_USER: blog_user
+            MYSQL_PASSWORD: secret
+        volumes:
+            - './docker/8.2/my.cnf:/etc/my.cnf'
